@@ -10,7 +10,7 @@ class Solution {
         }
 
         for(String com : completion){
-            name.put(com, name.getOrDefault(com, 0) - 1);
+            name.put(com, name.get(com) - 1);
         }
 
         for(String st : name.keySet()){
