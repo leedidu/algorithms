@@ -1,36 +1,44 @@
-import java.util.Arrays;
-
+import java.util.*;
 
 class Solution {
-    public static int solution(int m, int n, int[][] puddles) {
-        int[][] map = new int[n+1][m+1];
-        int mod = 1000000007;
-
-        for(int[] puddle : puddles) {
-            map[puddle[1]][puddle[0]] = -1;
+    static int[][] routes;
+    public int solution(int m, int n, int[][] puddles) {
+        int answer = 0;
+        routes = new int[n][m];
+        routes[0][0] = 1;
+                
+        for(int[] puddle : puddles){
+            routes[puddle[1] - 1][puddle[0] - 1] = -1;
         }
-
-        map[1][1] = 1;
-
-        for (int i = 1; i <= n; i++) {
-            for (int j = 1; j <= m; j++) {
-                // 위쪽 또는 왼쪽이 -1이면 현재 위치의 계산을 하지 않고 넘어감
-                if(map[i][j] == -1) {
-//                    map[i][j] = 0;
+        
+        for(int i = 0; i < m; i++){
+            if(routes[0][i] == -1){
+                break;
+            }
+            routes[0][i] = 1;
+        }
+        for(int i = 0; i < n; i++){
+            if(routes[i][0] == -1){
+                break;
+            }
+            routes[i][0] = 1;
+        }
+        dp(m, n);
+        answer = routes[n - 1][m - 1] % 1000000007;
+        return answer;
+    }
+    
+    private void dp(int m, int n){
+        for(int i = 1; i < n; i++){
+            for(int j = 1; j < m; j++){
+                if(routes[i][j] == -1){
                     continue;
                 }
-
-                if(map[i-1][j] > 0){
-                    map[i][j] += map[i-1][j];
-                }
-
-                if(map[i][j-1] > 0){
-                    map[i][j] += map[i][j-1];
-                }
-                    map[i][j] %= mod;
+                
+                int up = routes[i - 1][j] == -1 ? 0 : routes[i - 1][j];
+                int left = routes[i][j - 1] == -1 ? 0 : routes[i][j - 1];
+                routes[i][j] = (up + left) % 1000000007;
             }
         }
-
-        return map[n][m];
     }
 }
