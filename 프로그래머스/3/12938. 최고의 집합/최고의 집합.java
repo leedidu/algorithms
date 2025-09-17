@@ -1,22 +1,21 @@
-import java.util.Arrays;
+import java.util.*;
 
 class Solution {
-    public static int[] solution(int n, int s) {
-        // 합이 s면서 n개의 수의 곱은 최대를 구함
-        // 각 수의 차가 최소가 되어야함
-        // 최고의 집합이 없을 경우 -1
-        if(n > s) return new int[]{-1};
+    public int[] solution(int n, int s) {        
+        if(n > s){
+            return new int[]{-1};
+        } 
         int[] answer = new int[n];
+        
+        int q = s / n;
+        int r = s % n;
 
-        for(int i = 0; i < n; i++) {
-            answer[i] = s / n;
-        }
+        Arrays.fill(answer, q);
 
-        for(int i = 0; i < s % n; i++) {
+        for (int i = n - r; i < n; i++) { // 뒤에서부터 분배
             answer[i]++;
         }
-
-        Arrays.sort(answer);
+        
         return answer;
     }
 }
