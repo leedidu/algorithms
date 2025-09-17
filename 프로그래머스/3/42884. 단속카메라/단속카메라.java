@@ -1,18 +1,20 @@
-import java.util.Arrays;
+import java.util.*;
 
 class Solution {
-    public static int solution(int[][] routes) {
+    public int solution(int[][] routes) {
+        Arrays.sort(routes, (a, b) -> Integer.compare(a[1], b[1]));
+        
+        int now = routes[0][1];
         int answer = 1;
-        Arrays.sort(routes, (o1, o2) -> Integer.compare(o1[1], o2[1]));
-        int end = routes[0][1];
-        for(int i = 1; i < routes.length; i++) {
-            // 만약 첫번째차의 출발점보다 크면 다음으로 넘어가야됨
-            // 현재 차량의 진입 시점이 이전 차량의 진출시점보다 클때만 새로운 카메라 설치
-            if(routes[i][0] > end) {
-                answer++;
-                end = routes[i][1];
+
+        for(int[] route : routes){
+            if(route[0] <= now && route[1] >= now){
+                continue;
             }
+            now = route[1];
+            answer++;
         }
+        
         return answer;
     }
 }
