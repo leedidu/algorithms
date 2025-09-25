@@ -1,31 +1,34 @@
+import java.util.*;
+
 class Solution {
-    public static int solution(int sticker[]) {
+    public int solution(int[] sticker) {
         int answer = 0;
+        int[] dp1 = new int[sticker.length];
+        int[] dp2 = new int[sticker.length];
 
-        int[] a = new int[sticker.length];
-        int[] b = new int[sticker.length];
+        dp1[0] = sticker[0];
+        dp2[0] = 0;
+        
+        if(sticker.length >= 2){
+            dp1[1] = Math.max(sticker[0], sticker[1]);
+            dp2[1] = sticker[1];
+            
+                    
+            for(int i = 2; i < sticker.length - 1; i++){
+                dp1[i] = Math.max(dp1[i-1], dp1[i-2] + sticker[i]);
+            }
 
-        if(sticker.length == 1) {
-            return sticker[0];
+            for(int i = 2; i < sticker.length; i++){
+                dp2[i] = Math.max(dp2[i-1], dp2[i-2] + sticker[i]);
+            }
+
+            answer = Math.max(dp1[sticker.length - 2], dp2[sticker.length - 1]);
+        } else if(sticker.length == 1){
+            answer = sticker[0];
+        } else{
+            answer = Math.max(sticker[0], sticker[1]);
         }
 
-        // 첫번째 시작
-        a[0] = sticker[0];
-        a[1] = sticker[0]; // 뗄 수 없으므로
-
-        for(int i = 2; i < sticker.length - 1; i++) {
-            a[i] = Math.max(a[i - 1], a[i - 2] + sticker[i]); // 최대를 넣어줘야함
-            // i번째 인덱스에서 2번째 전의 값에서 i번째의 값을 더한 것과 직전의 값과 비교를 하며 추가
-        }
-        // 두번째 시작
-        b[0] = 0;
-        b[1] = sticker[1];
-
-        for(int i = 2; i < sticker.length; i++) {
-            b[i] = Math.max(b[i - 1], b[i - 2] + sticker[i]);
-        }
-
-        answer = Math.max(a[sticker.length - 2], b[sticker.length - 1]);
         return answer;
     }
 }
